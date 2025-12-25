@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useApiStore } from "@/stores/useApi";
 import PageTitle from "@/components/custom/PageTitle";
 import { CircleAlert, CircleCheckBig, MapPin, ChevronDown, User, Scissors, X, Calendar, Clock } from "lucide-react";
@@ -35,6 +36,7 @@ export default function UserBooking({
     booking,
     onClose
 }: UserBookingProps) {
+    const router = useRouter();
     const apiStore = useApiStore();
     const [formData, setFormData] = useState<FormData>({
         booking_date: null,
@@ -165,7 +167,7 @@ export default function UserBooking({
                 if ( type === "edit" ) {
                     onClose?.();
                 } else {
-                    window.location.href = "/booking";
+                    router.push("/booking");
                 }
             }
         } catch (err: any) {
