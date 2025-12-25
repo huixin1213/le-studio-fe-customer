@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useApiStore } from "@/stores/useApi";
 import { useUser } from "@/stores/useUser";
 import Cookies from "js-cookie";
+import Link from "next/link";
 import { Eye, EyeOff, UserCheck } from 'lucide-react';
 import { toast } from "sonner";
 import { PhoneInput } from '@/components/custom/PhoneInput';
@@ -11,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
+    const router = useRouter();
     const apiStore = useApiStore();
     const [mobileNumber, setMobileNumber] = useState('');
     const [password, setPassword] = useState('');
@@ -34,7 +37,7 @@ export default function LoginPage() {
                 // store user in Zustand
                 useUser.getState().setUser(data.customer, data.token);
 
-                window.location.href = "/dashboard";
+                router.push("/dashboard");
             } else {
                 toast(data.message);
             }
@@ -109,18 +112,18 @@ export default function LoginPage() {
                                     <span className="bg-white px-2 text-gray-500">Or</span>
                                 </div>
                             </div>
-                            <a href="booking">
+                            <Link href="booking">
                                 <Button className="border bg-background h-10 px-4 py-2 w-full border-primary text-primary hover:bg-primary hover:text-white">
                                     <UserCheck className="h-4 w-4 mr-2" />
                                     Continue as Guest
                                 </Button>
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="mt-6 text-center">
                             <p className="text-sm text-gray-600">
                                 Don't have an account? 
-                                <a className="text-primary hover:text-gray-800 font-medium transition-colors" href="/signup"> Sign up</a>
+                                <Link className="text-primary hover:text-gray-800 font-medium transition-colors" href="/signup"> Sign up</Link>
                             </p>
                         </div>
                     </div>

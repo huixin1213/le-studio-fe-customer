@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import Cookies from "js-cookie";
 
@@ -37,6 +37,7 @@ const menu = [
 ];
 
 export function AppSidebar() {
+	const router = useRouter();
 	const pathname = usePathname();
 	const apiStore = useApiStore();
 	const { logout } = useUser();
@@ -51,7 +52,7 @@ export function AppSidebar() {
 
 		Cookies.remove("token");
 		logout();
-		window.location.href = "/login";
+		router.push("/login");
 	}
 
 	return (
