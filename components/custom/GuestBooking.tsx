@@ -223,7 +223,7 @@ export default function GuestBooking() {
                     <div className="lg:col-span-8 space-y-4 sm:space-y-6">
                         <Card className="p-0 rounded-lg">
                             <div className="flex flex-col space-y-1.5 p-6 pb-3 sm:pb-4 px-3 sm:px-4 lg:px-6">
-                                <h3 className="font-semibold tracking-tight text-salon-primary text-base sm:text-lg">Your Information</h3>
+                                <h3 className="font-semibold tracking-tight text-primary text-base sm:text-lg">Your Information</h3>
                                 <p className="text-gray-600 text-xs sm:text-sm">We need your details to confirm the booking</p>
                             </div>
                             <div className="p-6 pt-0 space-y-4 px-3 sm:px-4 lg:px-6 pb-4 sm:pb-6">
@@ -540,7 +540,7 @@ export default function GuestBooking() {
                                                     <div className="font-medium text-gray-900 text-xs leading-relaxed flex-1 min-w-0">
                                                         <span className="wrap-break-word">{item.service_item.name}</span>
                                                     </div>
-                                                    <div className="text-salon-primary font-semibold text-xs shrink-0">
+                                                    <div className="text-primary font-semibold text-xs shrink-0">
                                                         <span className="whitespace-nowrap">RM {item.service_item.price}</span>
                                                     </div>
                                                 </div>

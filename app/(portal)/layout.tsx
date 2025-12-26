@@ -11,10 +11,10 @@ export default function PortalLayout({
 }) {
 	return (
 		<SidebarProvider>
-			<div className="flex min-h-screen  min-w-screen">
+			<div className="flex min-h-screen min-w-screen">
 				<AppSidebar />
 
-				<div className="flex-1 flex flex-col">
+				<div className="flex-1 flex flex-col max-w-[100vw]">
 					<Header />
 
 					<main className="flex-1 bg-gray-50 py-8 px-2 sm:px-4 lg:px-8">

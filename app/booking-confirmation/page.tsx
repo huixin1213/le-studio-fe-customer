@@ -32,7 +32,7 @@ export default function GuestBooking() {
                 {email && (
                     <div className="rounded-lg border bg-card text-card-foreground shadow-sm mb-6">
                         <div className="flex flex-col space-y-1.5 p-6 pb-4">
-                            <h3 className="text-2xl font-semibold leading-none tracking-tight flex items-center gap-2 text-salon-primary">
+                            <h3 className="text-2xl font-semibold leading-none tracking-tight flex items-center gap-2 text-primary">
                                 <Mail className="h-5 w-5" />
                                 Confirmation Email
                             </h3>
@@ -46,7 +46,7 @@ export default function GuestBooking() {
                 )}
                 <div className="rounded-lg border bg-card text-card-foreground shadow-sm mb-6">
                     <div className="flex flex-col space-y-1.5 p-6 pb-4">
-                        <h3 className="text-2xl font-semibold leading-none tracking-tight flex items-center gap-2 text-salon-primary">
+                        <h3 className="text-2xl font-semibold leading-none tracking-tight flex items-center gap-2 text-primary">
                             <Calendar className="h-5 w-5" />
                             What's Next?
                         </h3>
@@ -54,11 +54,11 @@ export default function GuestBooking() {
                     <div className="p-6 pt-0">
                         <div className="space-y-3 text-sm text-gray-600">
                             <div className="flex items-start gap-3">
-                                <div className="w-2 h-2 bg-salon-primary rounded-full mt-2 shrink-0"></div>
+                                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0"></div>
                                 <p>Arrive 10 minutes early for your appointment</p>
                             </div>
                             <div className="flex items-start gap-3">
-                                <div className="w-2 h-2 bg-salon-primary rounded-full mt-2 shrink-0"></div>
+                                <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0"></div>
                                 <p>Contact the salon if you need to reschedule or cancel</p>
                             </div>
                         </div>

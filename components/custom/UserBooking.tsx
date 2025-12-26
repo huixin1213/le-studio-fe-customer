@@ -560,7 +560,7 @@ export default function UserBooking({
                                                     <div className="font-medium text-gray-900 text-xs leading-relaxed flex-1 min-w-0">
                                                         <span className="wrap-break-word">{item.service_item.name}</span>
                                                     </div>
-                                                    <div className="text-salon-primary font-semibold text-xs shrink-0">
+                                                    <div className="text-primary font-semibold text-xs shrink-0">
                                                         <span className="whitespace-nowrap">RM {item.service_item.price}</span>
                                                     </div>
                                                 </div>

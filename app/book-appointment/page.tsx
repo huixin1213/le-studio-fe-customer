@@ -30,7 +30,7 @@ export default function BookingPage() {
 				<div className="flex-1 flex flex-col">
 					<Header />
 
-					<main className="flex-1 bg-gray-50 py-8 px-2 sm:px-4 lg:px-8">
+					<main className="flex-1 bg-gray-50 py-8 px-2 sm:px-4 lg:px-8 max-w-[100vw]">
 						<div className="max-w-7xl mx-auto space-y-6 mb-6">
 							<UserBooking type="new" />
 						</div>
