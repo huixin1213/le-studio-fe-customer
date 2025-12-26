@@ -112,7 +112,7 @@ export default function LoginPage() {
                                     <span className="bg-white px-2 text-gray-500">Or</span>
                                 </div>
                             </div>
-                            <Link href="booking">
+                            <Link href="book-appointment">
                                 <Button className="border bg-background h-10 px-4 py-2 w-full border-primary text-primary hover:bg-primary hover:text-white">
                                     <UserCheck className="h-4 w-4 mr-2" />
                                     Continue as Guest
