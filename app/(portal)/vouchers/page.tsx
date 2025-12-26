@@ -199,7 +199,7 @@ export default function VouchersPage() {
         }
     }
 
-    async function fetchHistoryVouchers() {
+    async function fetchHistoryVouchers(page: number = 1) {
         try {
             const sortField = sorting?.[0]?.id ?? "";
             const sortOrder = sorting?.[0]?.desc ? "desc" : "asc";
@@ -210,6 +210,7 @@ export default function VouchersPage() {
                 status: status,
                 sort: sortField,
                 order: sortOrder,
+                page: page.toString(),
             }).toString();
 
             const data = await apiStore.crudRequest({

@@ -155,10 +155,6 @@
 	fill: white !important;
 }
 
-/* div[role="dialog"] {
-	max-width: 95vw;
-} */
-
 @media print {
 	#root, 
 	#__next, 

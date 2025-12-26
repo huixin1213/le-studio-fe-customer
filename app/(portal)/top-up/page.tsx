@@ -153,7 +153,7 @@ export default function DashboardPage() {
         getCoreRowModel: getCoreRowModel(),
     });
 
-    async function fetchTopupList() {
+    async function fetchTopupList(page: number = 1) {
         try {
             const sortField = sorting?.[0]?.id ?? "";
             const sortOrder = sorting?.[0]?.desc ? "desc" : "asc";
@@ -164,6 +164,7 @@ export default function DashboardPage() {
                 type: type,
                 sort: sortField,
                 order: sortOrder,
+                page: page.toString(),
             }).toString();
 
             const data = await apiStore.crudRequest({

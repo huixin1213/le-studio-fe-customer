@@ -77,8 +77,10 @@ export default function AppointmentsPage() {
         }
     }
 
-    async function fetchUpcomingAppoinments() {
+    async function fetchUpcomingAppoinments(page: number = 1) {
         const params = [];
+
+        params.push("page=" + page);
 
         if ( startDate != "" ) {
             params.push("booking_date_from=" + startDate);
@@ -112,8 +114,10 @@ export default function AppointmentsPage() {
         }
     }
 
-    async function fetchHistoryAppoinments() {
+    async function fetchHistoryAppoinments(page: number = 1) {
         const params = [];
+
+        params.push("page=" + page);
 
         if ( startDate != "" ) {
             params.push("booking_date_from=" + startDate);
