@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useApiStore } from "@/stores/useApi";
 import { useUser } from "@/stores/useUser";
 import Cookies from "js-cookie";
+import Link from "next/link";
 import { UserPlus, UserCheck, ArrowLeft, EyeOff, Eye, Sparkles } from 'lucide-react';
 import { toast } from "sonner";
 import { PhoneInput } from '@/components/custom/PhoneInput';
@@ -25,6 +27,7 @@ type FormData = {
 };
 
 export default function SignupPage() {
+    const router = useRouter();
     const apiStore = useApiStore();
     const [formData, setFormData] = useState<FormData>({
         mobile_no: null,
@@ -61,7 +64,7 @@ export default function SignupPage() {
                 // store user in Zustand
                 useUser.getState().setUser(data.user, data.token);
 
-                window.location.href = "/dashboard";
+                router.push("/dashboard");
             } else {
                 toast(data.message);
             }
@@ -77,12 +80,12 @@ export default function SignupPage() {
         <div className="flex items-center w-full justify-center">
             <div className="w-full max-w-sm sm:max-w-md py-6">
                 <div className="mb-4 flex items-center">
-                    <a href="/login">
+                    <Link href="/login">
                         <Button className="bg-transparent h-10 px-4 py-2 flex items-center gap-2 text-primary hover:bg-accent hover:text-accent-foreground">
                             <ArrowLeft className="h-5 w-5" />
                             Back
                         </Button>
-                    </a>
+                    </Link>
                 </div>
                 <div className="text-center mb-6 sm:mb-8">
                     <div className="bg-primary p-3 rounded-full w-fit mx-auto mb-4">
@@ -273,7 +276,7 @@ export default function SignupPage() {
                         <div className="mt-6 text-center">
                             <p className="text-sm text-gray-600">
                                 Already have an account?
-                                <a className="text-primary hover:text-gray-800 font-medium transition-colors" href="/login"> Sign in</a>
+                                <Link className="text-primary hover:text-gray-800 font-medium transition-colors" href="/login"> Sign in</Link>
                             </p>
                         </div>
                     </div>

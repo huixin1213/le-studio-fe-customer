@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useApiStore } from "@/stores/useApi";
 import { useUser } from "@/stores/useUser";
+import Link from "next/link";
 import { Calendar, History, Package, Clock, MapPin, User, DollarSign, Info, MessageCircle, Star, Eye, Zap, BookOpen, Receipt, Download } from 'lucide-react';
 import { toast } from "sonner";
 import PageTitle from "@/components/custom/PageTitle";
@@ -102,12 +103,12 @@ export default function DashboardPage() {
                             </div>
                         </div>
                         <div className="p-4 space-y-6">
-                            <a className="block" href="/booking">
+                            <Link className="block" href="/booking">
                                 <Button className="text-white duration-200 px-4 py-2 w-full bg-primary hover:bg-gray-600 h-12 transition-colors">
                                     <Calendar className="h-4 w-4 mr-2" />
                                     Book New Appointment
                                 </Button>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -136,9 +137,9 @@ export default function DashboardPage() {
                                                 </div>
                                                 <h3 className="font-semibold tracking-tight text-lg text-gray-900">Upcoming Appointments</h3>
                                             </div>
-                                            <a href="/booking">
+                                            <Link href="/booking">
                                                 <Button variant={"outline"} className="h-9 rounded-md px-3 text-xs">View All</Button>
-                                            </a>
+                                            </Link>
                                         </div>
 
                                         <ScrollArea className="h-72 w-full mt-6">
@@ -336,9 +337,9 @@ export default function DashboardPage() {
                                     </div>
                                     <h3 className="font-semibold tracking-tight text-lg text-gray-900">Active Packages</h3>
                                 </div>
-                                <a href="/packages">
+                                <Link href="/packages">
                                     <Button variant={"outline"} className="h-9 rounded-md px-3 text-xs">View All</Button>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="p-6 pt-2 pb-6">
@@ -500,25 +501,25 @@ export default function DashboardPage() {
                             </div>
                         </div>
                         <div className="p-6 px-6 space-y-6 pt-3">
-                            <a className="block" href="/book-appointment">
+                            <Link className="block" href="/book-appointment">
                                 <Button className="text-white duration-200 px-4 py-2 w-full bg-primary hover:bg-gray-600 h-12 transition-colors">
                                     <Calendar className="h-4 w-4 mr-2" />
                                     Book New Appointment
                                 </Button>
-                            </a>
+                            </Link>
                             <div className="grid grid-cols-2 gap-3">
-                                <a href="/booking">
+                                <Link href="/booking">
                                     <Button variant="outline" className="h-10 text-sm w-full">
                                         <History className="h-4 w-4 mr-1" />
                                         Appointments
                                     </Button>
-                                </a>
-                                <a href="/packages">
+                                </Link>
+                                <Link href="/packages">
                                     <Button variant="outline" className="h-10 text-sm w-full">
                                         <Package className="h-4 w-4 mr-1" />
                                         Packages
                                     </Button>
-                                </a>
+                                </Link>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-700 mb-4 flex items-center gap-2">

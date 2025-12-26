@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useApiStore } from "@/stores/useApi";
 import { Filter, Plus, SquarePen, Trash, MapPin, User, Calendar, DollarSign, Info, MessageCircle, Receipt, Download } from 'lucide-react';
 import { toast } from "sonner";
@@ -250,12 +251,12 @@ export default function AppointmentsPage() {
                         </PopoverContent>
                     </Popover>
                 </div>
-                <a className="flex-1 sm:flex-none" href="/book-appointment">
+                <Link className="flex-1 sm:flex-none" href="/book-appointment">
                     <Button className="h-10 bg-gray-900 hover:bg-gray-800 text-white w-full sm:w-auto px-6 py-2.5 transition-all duration-200 hover:scale-105">
                         <Plus className="w-4 h-4 mr-2" />
                         Book Appointment
                     </Button>
-                </a>
+                </Link>
             </div>
 
             <Tabs defaultValue="upcoming" className="w-full space-y-1.5" onValueChange={handleTabChange}>
