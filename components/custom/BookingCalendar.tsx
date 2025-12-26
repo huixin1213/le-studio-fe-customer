@@ -239,18 +239,7 @@ export default function BookingCalendar() {
                                                 {(selectedDay[status] as Booking[]).map((b) => (
                                                     <div 
                                                         key={b.id} 
-                                                        className={`border rounded-lg bg-gray-50 shadow-sm p-4 md:p-6 space-y-4 transition-all 
-                                                            ${b.status === 0 && new Date(b.booking_date).getTime() >= new Date().setHours(0,0,0,0) 
-                                                            ? "cursor-pointer hover:bg-gray-100" 
-                                                            : "cursor-not-allowed"}`
-                                                        }
-                                                        onClick={() => {
-                                                            // Only allow click if confirmed and date is today or future
-                                                            if (b.status === 0 && new Date(b.booking_date).getTime() >= new Date().setHours(0,0,0,0)) {
-                                                            setOpenEditBookingDialog(true);
-                                                            setOpenBooking(b);
-                                                            }
-                                                        }}
+                                                        className="border rounded-lg bg-gray-50 shadow-sm p-4 md:p-6 space-y-4"
                                                     >
                                                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                                                             <div className="flex items-center gap-2">
@@ -321,6 +310,20 @@ export default function BookingCalendar() {
                                                                 )}
                                                             </div>
                                                         </div>
+                                                        {(b.status === 0 && new Date(b.booking_date).getTime() >= new Date().setHours(0,0,0,0)) && (
+                                                            <div className="flex justify-end gap-2">
+                                                                <Button 
+                                                                    className="transition-all duration-200 h-10 px-4 py-2 "
+                                                                    onClick={() => {
+                                                                        setOpenEditBookingDialog(true);
+                                                                        setOpenBooking(b);
+                                                                    }}
+                                                                    variant="outline"
+                                                                >
+                                                                    Edit
+                                                                </Button>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 ))}
                                             </div>
