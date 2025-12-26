@@ -154,3 +154,31 @@
 	background-color: white !important;
 	fill: white !important;
 }
+
+@media print {
+	#root, 
+	#__next, 
+	body > :not([data-state="open"]) { 
+		display: none !important; 
+	}
+
+	/* Hide the dark backdrop overlay entirely */
+	/* div[data-state="open"] > div:first-child { 
+		display: none !important; 
+	} */
+
+	button {
+		display: none !important; 
+	}
+
+	html, body {
+		height: auto !important;
+		overflow: visible !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.no-print {
+		display: none !important;
+	}
+}

@@ -587,7 +587,7 @@ export default function AppointmentsPage() {
                                             <Download className="w-4 h-4 mr-2" />
                                             Download
                                         </Button>
-                                        <Button className="bg-primary hover:bg-primary/90 h-9 rounded-md px-3 flex-1 border-gray-900 text-white">Close</Button>
+                                        <DialogClose className="bg-primary hover:bg-primary/90 h-9 rounded-md px-3 flex-1 border-gray-900 text-white">Close</DialogClose>
                                     </div>
                                 </div>
                             </div>

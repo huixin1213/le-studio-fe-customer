@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useApiStore } from "@/stores/useApi";
 import { useUser } from "@/stores/useUser";
-import { Calendar, History, Package, Clock, MapPin, User, DollarSign, Info, MessageCircle, Star, Eye, Zap, BookOpen } from 'lucide-react';
+import { Calendar, History, Package, Clock, MapPin, User, DollarSign, Info, MessageCircle, Star, Eye, Zap, BookOpen, Receipt, Download } from 'lucide-react';
 import { toast } from "sonner";
 import PageTitle from "@/components/custom/PageTitle";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Card } from "@/components/ui/card";
 import UserBooking from "@/components/custom/UserBooking";
+import BookingCalendar from "@/components/custom/BookingCalendar";
 
 export default function DashboardPage() {
     const { user } = useUser();
@@ -27,6 +28,8 @@ export default function DashboardPage() {
     const [openBooking, setOpenBooking] = useState<any>(null);
     const [openPackageDialog, setOpenPackageDialog] = useState(false);
     const [packageDetails, setPackageDetails] = useState<any>(null);
+    const [openReceiptDialog, setOpenReceiptDialog] = useState(false);
+    const [openReceipt, setOpenReceipt] = useState<any>(null);
 
     async function fetchData() {
         try {
@@ -56,6 +59,24 @@ export default function DashboardPage() {
             }
 
             console.log(data);
+        } catch (err: any) {
+            // console.log(err)
+        }
+    }
+
+    async function getTransaction(id: any) {
+        try {
+            const data = await apiStore.crudRequest({
+                endpoint: `customer/transaction/${id}`,
+                method: "GET",
+            });
+
+            if (data.message) {
+                toast(data.message);
+            } else {
+                setOpenReceipt(data);
+                setOpenReceiptDialog(true);
+            }
         } catch (err: any) {
             // console.log(err)
         }
@@ -169,7 +190,9 @@ export default function DashboardPage() {
                                     </div>
                                 </div>
                             </TabsContent>
-                            <TabsContent value="calendar"></TabsContent>
+                            <TabsContent value="calendar">
+                                <BookingCalendar />
+                            </TabsContent>
                         </Tabs>
                         
                         <Dialog open={openBookingDialog} onOpenChange={setOpenBookingDialog}>
@@ -423,7 +446,14 @@ export default function DashboardPage() {
                                                                             <div className="flex-1 min-w-0">
                                                                                 <div className="text-sm font-medium truncate">{packageDetails?.service[0]?.service?.service_item?.name}</div>
                                                                             </div>
-                                                                            <Button variant={"outline"} className="h-9 px-3 rounded-md">
+                                                                            <Button 
+                                                                                variant={"outline"} 
+                                                                                className="h-9 px-3 rounded-md"
+                                                                                onClick={() => {
+                                                                                    getTransaction(item?.transactions?.id);
+                                                                                    setOpenReceiptDialog(true);
+                                                                                }}
+                                                                            >
                                                                                 <Eye className="mr-1" />
                                                                                 Receipt
                                                                             </Button>
@@ -514,6 +544,80 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </div>
+
+            <Dialog open={openReceiptDialog} onOpenChange={setOpenReceiptDialog}>
+                <DialogContent className="max-w-2xl sm:max-w-2xl p-0 ">
+                    <div className="max-h-[85vh] overflow-y-auto px-6 py-4">
+                        <DialogHeader className="mb-4">
+                            <div className="flex justify-center mb-3 mt-4">
+                                <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center">
+                                    <Receipt className="w-6 h-6 text-white" />
+                                </div>
+                            </div>
+                            <DialogTitle className="font-semibold tracking-tight flex items-center gap-2 text-xl">Receipt</DialogTitle>
+                            <DialogDescription />
+                        </DialogHeader>
+
+                        <div className="space-y-4">
+                            <div className="bg-gray-50 rounded-lg p-4">
+                                <h3 className="font-semibold text-gray-900 mb-3">Service Details</h3>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex items-center text-gray-600">
+                                        <Calendar className="w-4 h-4 mr-2 text-gray-900" />
+                                        <span>{openReceipt?.created_at ? moment(openReceipt?.created_at).format('dddd, MMMM D, YYYY, h:mm A') : "-"}</span>
+                                    </div>
+                                    <div className="flex items-center text-gray-600">
+                                        <MapPin className="w-4 h-4 mr-2 text-gray-900" />
+                                        <span>{openReceipt?.branch.name}</span>
+                                    </div>
+                                    <div className="flex items-center text-gray-600">
+                                        <User className="w-4 h-4 mr-2 text-gray-900" />
+                                        <span>{openReceipt?.stylist.name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-gray-900 mb-3">Price Breakdown</h3>
+                                <div className="space-y-2">
+                                    {openReceipt?.transaction_item?.map((transaction: any, index: number) => {
+                                        switch (transaction.item_type) {
+                                            case "products":
+                                                return <div className="flex justify-between text-sm" key={index}><span className="text-gray-600">{transaction.item?.product_item?.name}</span><span className="text-gray-900 font-medium">RM {transaction.item?.product_item?.price}</span></div>
+                                            case "packages":
+                                                return <div className="flex justify-between text-sm" key={index}><span className="text-gray-600">{transaction.item?.package_item?.name}</span><span className="text-gray-900 font-medium">RM {transaction.item?.package_item?.price}</span></div>
+                                            case "services":
+                                                return <div className="flex justify-between text-sm" key={index}><span className="text-gray-600">{transaction.item?.service_item?.name}</span><span className="text-gray-900 font-medium">RM {transaction.item?.service_item?.price}</span></div>
+                                            case "topup":
+                                                return <div className="flex justify-between text-sm" key={index}><span className="text-gray-600">Topup</span><span className="text-gray-900">RM {transaction.item?.topup_item?.price}</span></div>
+                                            case "vouchers":
+                                                return <div className="flex justify-between text-sm" key={index}><span className="text-gray-600">{transaction.item?.voucher_item?.name}</span><span className="text-gray-900">RM {transaction.item?.voucher_item?.value}</span></div>
+                                            default:
+                                                return "-";
+                                        }
+                                    })}
+                                </div>
+                                <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-px w-full my-3"></div>
+                                <div className="flex justify-between font-semibold"><span className="text-gray-900">Total Paid</span><span className="text-gray-900">RM {openReceipt?.total_amount}</span></div>
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-4">
+                                <h3 className="font-semibold text-gray-900 mb-3">Transaction Details</h3>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex justify-between"><span className="text-gray-600">Payment Method</span><span className="text-gray-900">{openReceipt?.payment_method[0]?.method == "cash" ? "Cash" : "Credit/Debit"}</span></div>
+                                    <div className="flex justify-between"><span className="text-gray-600">Date Paid</span><span className="text-gray-900">{openReceipt?.created_at ? moment(openReceipt?.created_at).format('dddd, MMMM D, YYYY') : "-"}</span></div>
+                                    <div className="flex justify-between"><span className="text-gray-600">Status</span><span className="text-green-600 font-medium">Paid</span></div>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 pt-4 no-print">
+                                <Button className="bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex-1 border-gray-300 text-gray-700" variant="outline" onClick={() => window.print()}>
+                                    <Download className="w-4 h-4 mr-2" />
+                                    Download
+                                </Button>
+                                <DialogClose className="bg-primary hover:bg-primary/90 h-9 rounded-md px-3 flex-1 border-gray-900 text-white">Close</DialogClose>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }
