@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PhoneInput } from '@/components/custom/PhoneInput';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Bell, User, Lock, Eye, EyeOff, Shield } from 'lucide-react';
 import { useEffect, useState } from "react";
 import { useApiStore } from "@/stores/useApi";
@@ -35,12 +36,12 @@ export default function SettingPage() {
         new_password_confirmation: null,
     });
     const [selectedMenu, setSelectedMenu] = useState("profile");
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isEmailNotification, setIsEmailNotification] = useState<boolean>(false);
+    const [isSmsNotification, setIsSmsNotification] = useState<boolean>(false);
+    const [isPromotionalOffer, setIsPromotionalOffer] = useState<boolean>(false);
 
     async function fetchProfile() {
         try {
@@ -143,10 +144,10 @@ export default function SettingPage() {
                                     <Lock className="h-5 w-5" />
                                     <span className="font-medium">Security</span>
                                 </button>
-                                <button className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${selectedMenu == "notifications" ? 'bg-gray-900 text-white' : 'text-gray-700 hover:bg-gray-100 bg-transparent'}`} onClick={() => setSelectedMenu("notifications")}>
+                                {/* <button className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${selectedMenu == "notifications" ? 'bg-gray-900 text-white' : 'text-gray-700 hover:bg-gray-100 bg-transparent'}`} onClick={() => setSelectedMenu("notifications")}>
                                     <Bell className="h-5 w-5" />
                                     <span className="font-medium">Notifications</span>
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     </div>
@@ -210,8 +211,6 @@ export default function SettingPage() {
                                             <Input
                                                 id="currentPassword"
                                                 type={showCurrentPassword ? "text" : "password"}
-                                                // value={currentPassword}
-                                                // onChange={(e) => setCurrentPassword(e.target.value)}
                                                 placeholder="Enter your current password"
                                                 className="h-11 pr-10"
                                                 value={passwordFormData.current_password ?? ""} 
@@ -239,8 +238,6 @@ export default function SettingPage() {
                                             <Input
                                                 id="newPassword"
                                                 type={showNewPassword ? "text" : "password"}
-                                                // value={newPassword}
-                                                // onChange={(e) => setNewPassword(e.target.value)}
                                                 placeholder="Enter your new password"
                                                 className="h-11 pr-10"
                                                 value={passwordFormData.new_password ?? ""} 
@@ -268,8 +265,6 @@ export default function SettingPage() {
                                             <Input
                                                 id="confirmPassword"
                                                 type={showConfirmPassword ? "text" : "password"}
-                                                // value={confirmPassword}
-                                                // onChange={(e) => setConfirmPassword(e.target.value)}
                                                 placeholder="Confirm your new password"
                                                 className="h-11 pr-10"
                                                 value={passwordFormData.new_password_confirmation ?? ""} 
@@ -313,6 +308,30 @@ export default function SettingPage() {
                                             <h2 className="text-xl font-semibold text-gray-900">Notification Settings</h2>
                                             <p className="text-gray-600">Manage how you receive notifications</p>
                                         </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                        <div className="text-left flex-1">
+                                            <Label className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-medium text-gray-900 block text-left">Email Notifications</Label>
+                                            <p className="text-sm text-gray-600 mt-1 text-left">Receive important updates by email – Password Change Notifications and Appointment Reminders</p>
+                                        </div>
+                                        <Switch checked={isEmailNotification} onCheckedChange={(v: boolean) => setIsEmailNotification(v)} />
+                                    </div>
+
+                                    <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                        <div className="text-left flex-1">
+                                            <Label className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-medium text-gray-900 block text-left">SMS Notifications</Label>
+                                            <p className="text-sm text-gray-600 mt-1 text-left">Receive updates via text message</p>
+                                        </div>
+                                        <Switch checked={isSmsNotification} onCheckedChange={(v: boolean) => setIsSmsNotification(v)} />
+                                    </div>
+
+                                    <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                        <div className="text-left flex-1">
+                                            <Label className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-medium text-gray-900 block text-left">Promotional Offers</Label>
+                                            <p className="text-sm text-gray-600 mt-1 text-left">Receive special offers and promotions</p>
+                                        </div>
+                                        <Switch checked={isPromotionalOffer} onCheckedChange={(v: boolean) => setIsPromotionalOffer(v)} />
                                     </div>
                                     
                                     <div className="flex justify-end pt-4">

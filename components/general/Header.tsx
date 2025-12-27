@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "@/stores/useUser";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import UserNotification from '@/components/custom/UserNotification';
 
 type HeaderProps = {
     onToggleSidebar?: () => void;
@@ -30,12 +31,14 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
 
             {/* Right */}
             <div className="flex items-center space-x-2 lg:space-x-4">
+                <UserNotification />
+
                 <Link href="/settings">
                     <Button className="bg-transparent rounded-md h-8 w-8 p-0 hover:bg-gray-100 shrink-0">
                         <Settings className="h-4 w-4 text-gray-600" />
                     </Button>
                 </Link>
-
+                
                 <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center shrink-0">
                         <span className="text-sm font-semibold text-gray-700">
