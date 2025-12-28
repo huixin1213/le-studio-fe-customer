@@ -47,6 +47,10 @@ export default function SignupPage() {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        if (formData.other_race === null) {
+            delete formData.other_race;
+        }
+
         try {
             const data = await apiStore.crudRequest({
                 endpoint: `customer/register`,
@@ -55,14 +59,12 @@ export default function SignupPage() {
                 authRequired: false
             });
 
-            console.log(data)
-
             if ( data.token ) {
                 // store token in cookie
                 Cookies.set("le_classic_customer_token", data.token, { expires: 7 });
 
                 // store user in Zustand
-                useUser.getState().setUser(data.user, data.token);
+                useUser.getState().setUser(data.customer, data.token);
 
                 router.push("/dashboard");
             } else {
