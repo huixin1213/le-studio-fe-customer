@@ -76,7 +76,7 @@ export const useApiStore = create<ApiStore>(() => ({
             // 401 → logout
             // -----------------------
             if (res.status === 401) {
-                Cookies.remove("token");
+                Cookies.remove("le_classic_customer_token");
                 useUser.getState().logout();
                 window.location.href = "/login";
                 throw new Error("Unauthorized");

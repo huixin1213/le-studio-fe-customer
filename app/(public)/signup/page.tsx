@@ -59,7 +59,7 @@ export default function SignupPage() {
 
             if ( data.token ) {
                 // store token in cookie
-                Cookies.set("token", data.token, { expires: 7 });
+                Cookies.set("le_classic_customer_token", data.token, { expires: 7 });
 
                 // store user in Zustand
                 useUser.getState().setUser(data.user, data.token);

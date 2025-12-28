@@ -52,7 +52,7 @@ export function AppSidebar() {
 			});
 		} catch {}
 
-		Cookies.remove("token");
+		Cookies.remove("le_classic_customer_token");
 		logout();
 		router.push("/login");
 	}

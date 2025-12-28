@@ -6,7 +6,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 
 export default function GuestBooking() {
-    const email = Cookies.get("guest-email");
+    const email = Cookies.get("le_classic_customer_guest_email");
 
     return (
         <>

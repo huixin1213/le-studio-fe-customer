@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 export function middleware(req: NextRequest) {
-	const token = req.cookies.get("token")
+	const token = req.cookies.get("le_classic_customer_token")?.value || null
 	const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
 	const url = req.nextUrl.clone()

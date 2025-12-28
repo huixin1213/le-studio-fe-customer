@@ -52,7 +52,7 @@ export default function GuestBooking() {
     const [servicesSubCatList, setServicesSubCatList] = useState<{ id: string; name: string }[]>([]);
     const [selectedServicesSubCat, setSelectedServicesSubCat] = useState("");
     const [servicesList, setServicesList] = useState<{ id: string; service_item: {name: string; duration: string; price: string; id: string; items_id: string;} }[]>([]);
-    const [selectedServices, setSelectedServices] = useState<{ id?: string; service_item: { id?: string; name: string; duration?: string; price?: string } }[]>([]);
+    const [selectedServices, setSelectedServices] = useState<{ id?: string; service_item: { id?: string; items_id: string; name: string; duration?: string; price?: string } }[]>([]);
     const [availableTimeList, setAvailableTimeList] = useState<{ time: string; is_occupied: boolean }[]>([]);
 
     async function fetchBranches() {
@@ -167,7 +167,7 @@ export default function GuestBooking() {
                 if (formData.email) {
                     const inTenMinutes = new Date(new Date().getTime() + 10 * 60 * 1000);
 
-                    Cookies.set("guest-email", formData.email, { expires: inTenMinutes });
+                    Cookies.set("le_classic_customer_guest_email", formData.email, { expires: inTenMinutes });
                 }
                 
                 toast(data.message);
@@ -401,7 +401,7 @@ export default function GuestBooking() {
                                     <div className="max-h-80 overflow-y-auto space-y-2">
                                         {servicesList.map((item) => {
                                             // const isChecked = selectedServices.includes(item);
-                                            const isChecked = selectedServices.some((s) => s.service_item.id === item.service_item.items_id);
+                                            const isChecked = selectedServices.some((s) => s.service_item.items_id === item.service_item.items_id);
 
                                             return (
                                                 <Label
@@ -425,7 +425,7 @@ export default function GuestBooking() {
                                                                 }));
                                                             } else {
                                                                 setSelectedServices((prev) =>
-                                                                    prev.filter((s) => s.service_item.id !== item.service_item.items_id)
+                                                                    prev.filter((s) => s.service_item.items_id !== item.service_item.items_id)
                                                                 );
                                                                 setFormData((prev) => ({
                                                                     ...prev,
@@ -528,7 +528,7 @@ export default function GuestBooking() {
                                             <p className="font-medium text-gray-900 text-sm mb-2">Stylist:</p>
                                             <p className="font-medium text-gray-900 text-sm">{selectedStylist ? selectedStylist.name : 'Random'}</p>
                                             {selectedStylist && (
-                                                <p className="text-xs text-gray-600 leading-relaxed wrap-break-word">{selectedStylist.stylist_positions_id} • +6{selectedStylist.mobile_no}</p>
+                                                <p className="text-xs text-gray-600 leading-relaxed wrap-break-word">{selectedStylist.stylist_positions_id} • +60{selectedStylist.mobile_no}</p>
                                             )}
                                         </div>
                                     )}

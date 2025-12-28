@@ -55,7 +55,7 @@ export default function UserBooking({
     const [servicesSubCatList, setServicesSubCatList] = useState<{ id: string; name: string }[]>([]);
     const [selectedServicesSubCat, setSelectedServicesSubCat] = useState("");
     const [servicesList, setServicesList] = useState<{ id: string; service_item: {name: string; duration: string; price: string; id: string; items_id: string;} }[]>([]);
-    const [selectedServices, setSelectedServices] = useState<{ id?: string; service_item: { id?: string; name: string; duration?: string; price?: string } }[]>([]);
+    const [selectedServices, setSelectedServices] = useState<{ id?: string; service_item: { id?: string; items_id: string; name: string; duration?: string; price?: string } }[]>([]);
     const [availableTimeList, setAvailableTimeList] = useState<{ time: string; is_occupied: boolean }[]>([]);
 
     async function fetchBranches() {
@@ -401,7 +401,7 @@ export default function UserBooking({
                                 <div className="max-h-80 overflow-y-auto space-y-2">
                                     {servicesList.map((item) => {
                                         // const isChecked = selectedServices.includes(item);
-                                        const isChecked = selectedServices.some((s) => s.service_item.id === item.service_item.items_id);
+                                        const isChecked = selectedServices.some((s) => s.service_item.items_id === item.service_item.items_id);
 
                                         return (
                                             <Label
@@ -425,7 +425,7 @@ export default function UserBooking({
                                                             }));
                                                         } else {
                                                             setSelectedServices((prev) =>
-                                                                prev.filter((s) => s.service_item.id !== item.service_item.items_id)
+                                                                prev.filter((s) => s.service_item.items_id !== item.service_item.items_id)
                                                             );
                                                             setFormData((prev) => ({
                                                                 ...prev,
