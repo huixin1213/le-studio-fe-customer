@@ -254,7 +254,7 @@ export default function VouchersPage() {
 
     useEffect(() => {
         fetchHistoryVouchers();
-    }, [sorting, startDate, endDate, status]);
+    }, [sorting, startDate, endDate, type]);
 
     return (
         <>
