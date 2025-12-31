@@ -207,7 +207,7 @@ export default function VouchersPage() {
             const query = new URLSearchParams({
                 transaction_date_from: startDate,
                 transaction_date_to: endDate,
-                type: type,
+                status: status,
                 sort: sortField,
                 order: sortOrder,
                 page: page.toString(),
@@ -254,7 +254,7 @@ export default function VouchersPage() {
 
     useEffect(() => {
         fetchHistoryVouchers();
-    }, [sorting, startDate, endDate, type]);
+    }, [sorting, startDate, endDate, status]);
 
     return (
         <>
