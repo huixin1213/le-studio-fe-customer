@@ -528,7 +528,7 @@ export default function GuestBooking() {
                                             <p className="font-medium text-gray-900 text-sm mb-2">Stylist:</p>
                                             <p className="font-medium text-gray-900 text-sm">{selectedStylist ? selectedStylist.name : 'Random'}</p>
                                             {selectedStylist && (
-                                                <p className="text-xs text-gray-600 leading-relaxed wrap-break-word">{selectedStylist.stylist_positions_id} • {selectedStylist.mobile_no}</p>
+                                                <p className="text-xs text-gray-600 leading-relaxed wrap-break-word">{selectedStylist.stylist_position?.position_name} • {selectedStylist.mobile_no}</p>
                                             )}
                                         </div>
                                     )}

@@ -476,7 +476,7 @@ export default function PackagesPage() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                                     <div className="space-y-1">
                                         <span className="text-gray-600">Purchase Date:</span>
-                                        <p className="font-semibold text-gray-900">{moment(`${packageDetails?.booking_date}`, "YYYY-MM-DD HH:mm:ss").format("DD-MMM-YYYY")}</p>
+                                        <p className="font-semibold text-gray-900">{moment(`${packageDetails?.purchased_at}`, "YYYY-MM-DD HH:mm:ss").format("DD-MMM-YYYY")}</p>
                                     </div>
                                     <div className="space-y-1">
                                         <span className="text-gray-600">Expiry Date:</span>
