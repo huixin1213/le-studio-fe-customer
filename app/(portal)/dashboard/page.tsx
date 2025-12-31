@@ -362,7 +362,7 @@ export default function DashboardPage() {
                                                         <h4 className="font-semibold text-gray-900 truncate">{item.package?.package_item?.name}</h4>
                                                     </div>
                                                 </div>
-                                                <div className="space-y-2">
+                                                {/* <div className="space-y-2">
                                                     <div className="flex justify-between text-sm text-gray-600">
                                                         <span className="flex items-center gap-1 text-gray-600">
                                                             <Clock className="h-3 w-3" />
@@ -377,6 +377,18 @@ export default function DashboardPage() {
                                                     {(item.service[0].total_sessions && item.service[0].total_sessions) && (
                                                         <Progress value={Math.round((item.service[0].remaining_sessions / item.service[0].total_sessions) * 100)} className="bg-gray-200 [&>div]:bg-linear-to-r [&>div]:from-emerald-500 [&>div]:to-emerald-600" />
                                                     )}
+                                                </div> */}
+                                                <div className="space-y-2">
+                                                    <div>
+                                                        <div className="flex justify-between text-sm mb-2">
+                                                            <span>Sessions Used</span>
+                                                            <span className="font-semibold">{item.service[0].total_sessions - item.service[0].remaining_sessions} / {item.service[0].total_sessions}</span>
+                                                        </div>
+                                                        <Progress value={Math.round(((item.service[0].total_sessions - item.service[0].remaining_sessions) / item.service[0].total_sessions) * 100)} className="bg-gray-200 [&>div]:bg-linear-to-r [&>div]:from-emerald-500 [&>div]:to-emerald-600" />
+                                                    </div>
+                                                    <div className="text-sm text-gray-600">
+                                                        <p>Expires:  {moment(`${item.expiry_date}`, "YYYY-MM-DD HH:mm:ss").format("DD-MMM-YYYY")}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))

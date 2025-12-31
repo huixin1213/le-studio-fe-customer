@@ -65,7 +65,7 @@ export default function UserBooking({
                 method: "GET",
             });
 
-            if ( data.length ) {
+            if ( data.length && type !== "edit" ) {
                 setSelectedBranch(data[0]);
                 setStylistList(data[0].stylist);
                 setFormData(prev => ({ ...prev, branches_id: data[0].id }));
@@ -235,7 +235,7 @@ export default function UserBooking({
                 }
             }
         }
-    }, [type, booking]);
+    }, [type, booking, branchList]);
 
     return (
         <>
@@ -510,13 +510,13 @@ export default function UserBooking({
                         </div>
                     </Card>
 
-                    {type === "edit" && (
+                    {(type === "edit" && (formData.branches_id === null || formData.stylist_id === null || selectedServices.length <= 0 || formData.booking_date === null || formData.booking_time === null)) && (
                         <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                             <div className="flex items-start gap-2">
                                 <CircleAlert className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
                                 <div>
                                     <p className="text-xs font-medium text-red-800">Please select:</p>
-                                    <p className="text-xs text-red-700 wrap-break-word">Date, Time</p>
+                                    <p className="text-xs text-red-700 wrap-wrap-break-word">{selectedServices.length <= 0 && "Service,"} {formData.branches_id === null && "Branch,"} {formData.stylist_id === null && "Stylist,"} {formData.booking_date === null && "Date,"} {formData.booking_time === null && "Time"}</p>
                                 </div>
                             </div>
                         </div>
@@ -548,7 +548,7 @@ export default function UserBooking({
                                             <p className="font-medium text-gray-900 text-sm mb-2">Stylist:</p>
                                             <p className="font-medium text-gray-900 text-sm">{selectedStylist ? selectedStylist.name : 'Random'}</p>
                                             {selectedStylist && (
-                                                <p className="text-xs text-gray-600 leading-relaxed wrap-break-word">{selectedStylist.stylist_positions_id} • +6{selectedStylist.mobile_no}</p>
+                                                <p className="text-xs text-gray-600 leading-relaxed wrap-break-word">{selectedStylist.stylist_position.position_name} • {selectedStylist.mobile_no}</p>
                                             )}
                                         </div>
                                     )}
