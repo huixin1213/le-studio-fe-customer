@@ -2,21 +2,15 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { buildCalendar } from "@/lib/buildCalendar";
-import { Calendar, ChevronLeft, ChevronRight, MapPin, User, DollarSign, Info, MessageCircle } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, MapPin, User, DollarSign, Info, MessageCircle, Trash } from "lucide-react";
 import { useApiStore } from "@/stores/useApi";
 import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-    DialogClose
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment-timezone";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import UserBooking from "@/components/custom/UserBooking";
+import { toast } from "sonner";
 
 type Booking = {
     id: number;
@@ -102,6 +96,21 @@ export default function BookingCalendar() {
         setBookingDays(normalized);
     }
 
+    async function cancelAppointment(id: any) {
+        try {
+            const data = await apiStore.crudRequest({
+                endpoint: `customer/appointment/${id}`,
+                method: "DELETE",
+            });
+
+            toast(data.message);
+            fetchBookingCalendar();
+            setOpenDialog(false);
+        } catch (err: any) {
+            // console.log(err)
+        }
+    }
+
     useEffect(() => {
         fetchBookingCalendar();
     }, [year, month]);
@@ -173,9 +182,9 @@ export default function BookingCalendar() {
                             key={`${wi}-${i}`}
                             className="h-10 sm:h-12 p-2 rounded-lg border hover:bg-accent text-left"
                             onClick={() => {
-                            if (!dayData) return;
-                            setSelectedDay(dayData);
-                            setOpenDialog(true);
+                                if (!dayData) return;
+                                setSelectedDay(dayData);
+                                setOpenDialog(true);
                             }}
                         >
                             <div className="text-sm font-medium mb-1">{cell.day}</div>
@@ -237,81 +246,126 @@ export default function BookingCalendar() {
                                         <div key={status}>
                                             <div className="space-y-2">
                                                 {(selectedDay[status] as Booking[]).map((b) => (
-                                                    <div 
-                                                        key={b.id} 
-                                                        className="border rounded-lg bg-gray-50 shadow-sm p-4 md:p-6 space-y-4"
-                                                    >
-                                                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                                                            <div className="flex items-center gap-2">
-                                                                <Calendar className="h-4 w-4 text-primary" />
-                                                                <h4 className="font-semibold text-primary">
-                                                                    {b?.booking_services?.map((bs: any) => bs.service?.service_item?.name?.trim())
-                                                                        .filter(Boolean)
-                                                                        .join(", ")
-                                                                    }
-                                                                </h4>
+                                                    <div key={b.id}>
+                                                        <div className="border rounded-lg bg-gray-50 shadow-sm p-4 md:p-6 space-y-4">
+                                                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                                                                <div className="flex items-center gap-2">
+                                                                    <Calendar className="h-4 w-4 text-primary" />
+                                                                    <h4 className="font-semibold text-primary">
+                                                                        {b?.booking_services?.map((bs: any) => bs.service?.service_item?.name?.trim())
+                                                                            .filter(Boolean)
+                                                                            .join(", ")
+                                                                        }
+                                                                    </h4>
+                                                                </div>
+                                                                <Badge>{b?.status_label}</Badge>
                                                             </div>
-                                                            <Badge>{b?.status_label}</Badge>
-                                                        </div>
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 md:gap-x-4 md:gap-y-2 text-sm text-gray-700">
-                                                            <div className="flex flex-col gap-2">
-                                                                <div className="flex items-center flex-wrap">
-                                                                    <MapPin className="w-4 h-4 mr-2 text-primary" />
-                                                                    <span className="truncate">{b?.branch?.name}</span>
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 md:gap-x-4 md:gap-y-2 text-sm text-gray-700">
+                                                                <div className="flex flex-col gap-2">
+                                                                    <div className="flex items-center flex-wrap">
+                                                                        <MapPin className="w-4 h-4 mr-2 text-primary" />
+                                                                        <span className="truncate">{b?.branch?.name}</span>
+                                                                    </div>
+                                                                    <div className="flex items-center flex-wrap">
+                                                                        <Calendar className="w-4 h-4 mr-2 text-primary" />
+                                                                        <span className="truncate">{moment(`${b?.booking_date} ${b?.booking_time}`, "YYYY-MM-DD HH:mm:ss").format("DD-MMM-YYYY, hh:mm A")}</span>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="flex items-center flex-wrap">
-                                                                    <Calendar className="w-4 h-4 mr-2 text-primary" />
-                                                                    <span className="truncate">{moment(`${b?.booking_date} ${b?.booking_time}`, "YYYY-MM-DD HH:mm:ss").format("DD-MMM-YYYY, hh:mm A")}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex flex-col gap-2">
-                                                                <div className="flex items-center flex-wrap">
-                                                                    <User className="w-4 h-4 mr-2 text-primary" />
-                                                                    <span className="truncate">{b?.stylist?.name}</span>
-                                                                </div>
-                                                                <div className="flex items-center flex-wrap">
-                                                                    <DollarSign className="w-4 h-4 mr-2 text-primary" />
-                                                                    <span>RM {b?.booking_services?.reduce((sum: any, s: any) => sum + parseFloat(String(s.service.service_item.price || "0")), 0).toFixed(2)}</span>
-                                                                    <div className="ml-1">
-                                                                        <Tooltip>
-                                                                            <TooltipTrigger>
-                                                                                <Info className="w-4 h-4 text-gray-500 hover:text-gray-700 transition-colors" />
-                                                                            </TooltipTrigger>
-                                                                            
-                                                                            <TooltipContent className="bg-white border border-gray-200 shadow-lg">
-                                                                                <div className="min-w-[220px] max-w-[270px] p-3">
-                                                                                    <div className="space-y-2">
-                                                                                        <h4 className="font-semibold text-sm text-gray-900">Price Breakdown</h4>
-                                                                                        <div className="space-y-1">
-                                                                                            {b?.booking_services?.map((item: any, index: number) => (
-                                                                                                <div className="flex justify-between text-xs" key={index}>
-                                                                                                    <span className="text-gray-600">{ item.service.service_item.name }</span>
-                                                                                                    <span className="text-gray-900 font-medium">RM { item.service.service_item.price }</span>
+                                                                <div className="flex flex-col gap-2">
+                                                                    <div className="flex items-center flex-wrap">
+                                                                        <User className="w-4 h-4 mr-2 text-primary" />
+                                                                        <span className="truncate">{b?.stylist?.name}</span>
+                                                                    </div>
+                                                                    <div className="flex items-center flex-wrap">
+                                                                        <DollarSign className="w-4 h-4 mr-2 text-primary" />
+                                                                        <span>RM {b?.booking_services?.reduce((sum: any, s: any) => sum + parseFloat(String(s.service.service_item.price || "0")), 0).toFixed(2)}</span>
+                                                                        <div className="ml-1">
+                                                                            <Tooltip>
+                                                                                <TooltipTrigger>
+                                                                                    <Info className="w-4 h-4 text-gray-500 hover:text-gray-700 transition-colors" />
+                                                                                </TooltipTrigger>
+                                                                                
+                                                                                <TooltipContent className="bg-white border border-gray-200 shadow-lg">
+                                                                                    <div className="min-w-[220px] max-w-[270px] p-3">
+                                                                                        <div className="space-y-2">
+                                                                                            <h4 className="font-semibold text-sm text-gray-900">Price Breakdown</h4>
+                                                                                            <div className="space-y-1">
+                                                                                                {b?.booking_services?.map((item: any, index: number) => (
+                                                                                                    <div className="flex justify-between text-xs" key={index}>
+                                                                                                        <span className="text-gray-600">{ item.service.service_item.name }</span>
+                                                                                                        <span className="text-gray-900 font-medium">RM { item.service.service_item.price }</span>
+                                                                                                    </div>
+                                                                                                ))}
+                                                                                            </div>
+                                                                                            <div className="border-t pt-2 mt-2">
+                                                                                                <div className="flex justify-between text-sm font-semibold">
+                                                                                                    <span className="text-gray-900">Total</span>
+                                                                                                    <span className="text-gray-900"> RM {b?.booking_services?.reduce((sum: any, s: any) => sum + parseFloat(String(s.service.service_item.price || "0")), 0).toFixed(2)}</span>
                                                                                                 </div>
-                                                                                            ))}
-                                                                                        </div>
-                                                                                        <div className="border-t pt-2 mt-2">
-                                                                                            <div className="flex justify-between text-sm font-semibold">
-                                                                                                <span className="text-gray-900">Total</span>
-                                                                                                <span className="text-gray-900"> RM {b?.booking_services?.reduce((sum: any, s: any) => sum + parseFloat(String(s.service.service_item.price || "0")), 0).toFixed(2)}</span>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </TooltipContent>
-                                                                        </Tooltip>
+                                                                                </TooltipContent>
+                                                                            </Tooltip>
+                                                                        </div>
                                                                     </div>
+                                                                    {b?.special_notes && (
+                                                                        <span className="flex items-center min-w-0 text-gray-700">
+                                                                            <MessageCircle className="w-3 h-3 mr-2 shrink-0 text-gray-900" />
+                                                                            <span className="wrap-break-words whitespace-pre-line max-w-[180px] sm:max-w-full truncate">{b?.special_notes}</span>
+                                                                        </span>
+                                                                    )}
                                                                 </div>
-                                                                {b?.special_notes && (
-                                                                    <span className="flex items-center min-w-0 text-gray-700">
-                                                                        <MessageCircle className="w-3 h-3 mr-2 shrink-0 text-gray-900" />
-                                                                        <span className="wrap-break-words whitespace-pre-line max-w-[180px] sm:max-w-full truncate">{b?.special_notes}</span>
-                                                                    </span>
-                                                                )}
                                                             </div>
+                                                            {/* {(b.status === 0 && new Date(b.booking_date).getTime() >= new Date().setHours(0,0,0,0)) && (
+                                                                <div className="flex justify-end gap-2">
+                                                                    <Button 
+                                                                        className="transition-all duration-200 h-10 px-4 py-2 "
+                                                                        onClick={() => {
+                                                                            setOpenEditBookingDialog(true);
+                                                                            setOpenBooking(b);
+                                                                        }}
+                                                                        variant="outline"
+                                                                    >
+                                                                        Edit
+                                                                    </Button>
+                                                                </div>
+                                                            )} */}
                                                         </div>
                                                         {(b.status === 0 && new Date(b.booking_date).getTime() >= new Date().setHours(0,0,0,0)) && (
-                                                            <div className="flex justify-end gap-2">
+                                                            <div className="flex justify-end gap-2 pt-2">
+                                                                <Dialog>
+                                                                    <DialogTrigger asChild>
+                                                                        <Button className="border bg-background hover:text-accent-foreground rounded-md text-red-600 border-red-300 hover:bg-red-50 text-xs transition-all duration-200 h-10 px-4 py-2">
+                                                                            <Trash className="w-3 h-3 mr-1" />
+                                                                            <span className="hidden sm:inline">Cancel</span>
+                                                                        </Button>
+                                                                    </DialogTrigger>
+
+                                                                    <DialogContent className="sm:max-w-md max-w-md p-0 text-left">
+                                                                        <div className="max-h-[85vh] overflow-y-auto px-6 py-4">
+                                                                            <DialogHeader>
+                                                                                <DialogTitle />
+                                                                                <DialogDescription />
+                                                                            </DialogHeader>
+
+                                                                            <div className="mb-4">
+                                                                                <h2 className="font-bold text-lg mb-2">Cancel Appointment</h2>
+                                                                                <p>Are you sure you want to cancel this appointment? This action cannot be undone.</p>
+                                                                            </div>
+
+                                                                            <div className="flex justify-end gap-3 py-2">
+                                                                                <DialogClose asChild>
+                                                                                    <Button variant="outline" type="button" className="hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Keep Appointment</Button>
+                                                                                </DialogClose>
+                                                                                <DialogClose asChild>
+                                                                                    <Button variant="destructive" type="button" className=" h-10 px-4 py-2" onClick={() => cancelAppointment(b?.id)}>Cancel Appointment</Button>
+                                                                                </DialogClose>
+                                                                            </div>
+                                                                        </div>
+                                                                    </DialogContent>
+                                                                </Dialog>
+                                                                
                                                                 <Button 
                                                                     className="transition-all duration-200 h-10 px-4 py-2 "
                                                                     onClick={() => {
@@ -331,22 +385,13 @@ export default function BookingCalendar() {
                                     ) : null
                                 )}
 
-                                <div className="flex justify-end pt-4 gap-2">
+                                {/* <div className="flex justify-end pt-4 gap-2">
                                     <DialogClose asChild>
                                         <Button variant="outline" className="h-10 px-4 py-2">
                                             Close
                                         </Button>
                                     </DialogClose>
-                                    {/* <Button 
-                                        className="transition-all duration-200 h-10 px-4 py-2 bg-primary text-white hover:bg-primary/90"
-                                        onClick={() => {
-                                            setOpenEditBookingDialog(true);
-                                            setOpenBookingDialog(false);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button> */}
-                                </div>
+                                </div> */}
                             </div>
                         )}
                     </div>

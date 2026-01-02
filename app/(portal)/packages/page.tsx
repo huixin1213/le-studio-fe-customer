@@ -568,7 +568,7 @@ export default function PackagesPage() {
                                     <Receipt className="w-6 h-6 text-white" />
                                 </div>
                             </div>
-                            <DialogTitle className="font-semibold tracking-tight flex items-center gap-2 text-xl">Receipt</DialogTitle>
+                            <DialogTitle className="font-semibold tracking-tight flex items-center gap-2 text-xl justify-center">Receipt</DialogTitle>
                             <DialogDescription />
                         </DialogHeader>
 

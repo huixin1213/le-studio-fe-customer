@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useApiStore } from "@/stores/useApi";
 import { useUser } from "@/stores/useUser";
 import Link from "next/link";
-import { Calendar, History, Package, Clock, MapPin, User, DollarSign, Info, MessageCircle, Star, Eye, Zap, BookOpen, Receipt, Download } from 'lucide-react';
+import { Calendar, History, Package, Clock, MapPin, User, DollarSign, Info, MessageCircle, Star, Eye, Zap, BookOpen, Receipt, Trash } from 'lucide-react';
 import { toast } from "sonner";
 import PageTitle from "@/components/custom/PageTitle";
 import { Button } from "@/components/ui/button";
@@ -79,6 +79,21 @@ export default function DashboardPage() {
                 setOpenReceipt(data);
                 setOpenReceiptDialog(true);
             }
+        } catch (err: any) {
+            // console.log(err)
+        }
+    }
+
+    async function cancelAppointment(id: any) {
+        try {
+            const data = await apiStore.crudRequest({
+                endpoint: `customer/appointment/${id}`,
+                method: "DELETE",
+            });
+
+            toast(data.message);
+            fetchData();
+            setOpenBookingDialog(false);
         } catch (err: any) {
             // console.log(err)
         }
@@ -285,7 +300,7 @@ export default function DashboardPage() {
                                             </div>
                                         </div>
                                         <div className="flex justify-end pt-4 gap-2">
-                                            <Button 
+                                            {/* <Button 
                                                 variant="outline" 
                                                 className="h-10 px-4 py-2"
                                                 onClick={() => {
@@ -294,7 +309,38 @@ export default function DashboardPage() {
                                                 }}
                                             >
                                                 Close
-                                            </Button>
+                                            </Button> */}
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button className="border bg-background hover:text-accent-foreground rounded-md text-red-600 border-red-300 hover:bg-red-50 text-xs transition-all duration-200 h-10 px-4 py-2">
+                                                        <Trash className="w-3 h-3 mr-1" />
+                                                        <span className="hidden sm:inline">Cancel</span>
+                                                    </Button>
+                                                </DialogTrigger>
+
+                                                <DialogContent className="sm:max-w-md max-w-md p-0 text-left">
+                                                    <div className="max-h-[85vh] overflow-y-auto px-6 py-4">
+                                                        <DialogHeader>
+                                                            <DialogTitle />
+                                                            <DialogDescription />
+                                                        </DialogHeader>
+
+                                                        <div className="mb-4">
+                                                            <h2 className="font-bold text-lg mb-2">Cancel Appointment</h2>
+                                                            <p>Are you sure you want to cancel this appointment? This action cannot be undone.</p>
+                                                        </div>
+
+                                                        <div className="flex justify-end gap-3 py-2">
+                                                            <DialogClose asChild>
+                                                                <Button variant="outline" type="button" className="hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Keep Appointment</Button>
+                                                            </DialogClose>
+                                                            <DialogClose asChild>
+                                                                <Button variant="destructive" type="button" className=" h-10 px-4 py-2" onClick={() => cancelAppointment(openBooking?.id)}>Cancel Appointment</Button>
+                                                            </DialogClose>
+                                                        </div>
+                                                    </div>
+                                                </DialogContent>
+                                            </Dialog>
                                             <Button 
                                                 className="transition-all duration-200 h-10 px-4 py-2 bg-primary text-white hover:bg-primary/90"
                                                 onClick={() => {
@@ -568,7 +614,7 @@ export default function DashboardPage() {
                                     <Receipt className="w-6 h-6 text-white" />
                                 </div>
                             </div>
-                            <DialogTitle className="font-semibold tracking-tight flex items-center gap-2 text-xl">Receipt</DialogTitle>
+                            <DialogTitle className="font-semibold tracking-tight flex items-center gap-2 text-xl justify-center">Receipt</DialogTitle>
                             <DialogDescription />
                         </DialogHeader>
 
