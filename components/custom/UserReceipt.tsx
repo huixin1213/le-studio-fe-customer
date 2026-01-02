@@ -146,7 +146,7 @@ export default function UserReceipt({
                                                                         <span>{transaction.item?.package_item?.name}</span>
                                                                     </div>
                                                                 </td>
-                                                                <td className="text-right py-1">1</td>
+                                                                <td className="text-right py-1">{transaction.quantity}</td>
                                                                 <td className="text-right py-1">RM {transaction.item?.package_item?.price}</td>
                                                                 <td className="text-right py-1">RM {transaction.item?.package_item?.price}</td>
                                                             </tr>
@@ -158,7 +158,7 @@ export default function UserReceipt({
                                                                     <span>{transaction.consumed_service.service_item.name} (Package)</span>
                                                                 </div>
                                                             </td>
-                                                            <td className="text-right py-1">1</td>
+                                                            <td className="text-right py-1">{transaction.consume_sessions}</td>
                                                             <td className="text-right py-1">RM {transaction.consumed_service.service_item.price}</td>
                                                             <td className="text-right py-1">RM 0</td>
                                                         </tr>

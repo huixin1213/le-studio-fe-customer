@@ -607,8 +607,8 @@ export default function DashboardPage() {
 
             <Dialog open={openReceiptDialog} onOpenChange={setOpenReceiptDialog}>
                 <DialogContent className="max-w-2xl sm:max-w-2xl p-0 ">
-                    <div className="max-h-[85vh] overflow-y-auto px-6 py-4">
-                        <DialogHeader className="mb-4">
+                    <div className="max-h-[85vh] overflow-y-auto p-0">
+                        <DialogHeader className="mb-4 no-print">
                             <div className="flex justify-center mb-3 mt-4">
                                 <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center">
                                     <Receipt className="w-6 h-6 text-white" />
