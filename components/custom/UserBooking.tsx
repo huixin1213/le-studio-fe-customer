@@ -107,15 +107,17 @@ export default function UserBooking({
             params.push("stylist_id=" + formData.stylist_id);
         }
 
-        try {
-            const data = await apiStore.crudRequest({
-                endpoint: `customer/items/services${params.length > 0 ? '?' + params.join('&') : ''}`,
-                method: "GET",
-            });
+        if ( formData.stylist_id != null ) {
+            try {
+                const data = await apiStore.crudRequest({
+                    endpoint: `customer/items/services${params.length > 0 ? '?' + params.join('&') : ''}`,
+                    method: "GET",
+                });
 
-            setServicesList(data);
-        } catch (err: any) {
-            // console.log(err)
+                setServicesList(data);
+            } catch (err: any) {
+                // console.log(err)
+            }       
         }
     }
 
