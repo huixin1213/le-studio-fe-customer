@@ -106,16 +106,18 @@ export default function GuestBooking() {
             params.push("stylist_id=" + formData.stylist_id);
         }
 
-        try {
-            const data = await apiStore.crudRequest({
-                endpoint: `customer/items/services${params.length > 0 ? '?' + params.join('&') : ''}`,
-                method: "GET",
-                authRequired: false
-            });
+        if ( formData.stylist_id != null ) {
+            try {
+                const data = await apiStore.crudRequest({
+                    endpoint: `customer/items/services${params.length > 0 ? '?' + params.join('&') : ''}`,
+                    method: "GET",
+                    authRequired: false
+                });
 
-            setServicesList(data);
-        } catch (err: any) {
-            // console.log(err)
+                setServicesList(data);
+            } catch (err: any) {
+                // console.log(err)
+            }
         }
     }
 
