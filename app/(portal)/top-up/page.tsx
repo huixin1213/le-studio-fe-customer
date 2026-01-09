@@ -156,7 +156,7 @@ export default function DashboardPage() {
     async function fetchTopupList(page: number = 1) {
         try {
             const sortField = sorting?.[0]?.id ?? "";
-            const sortOrder = sorting?.[0]?.desc ? "desc" : "asc";
+            const sortOrder = sorting.length > 0 ? sorting?.[0]?.desc ? "desc" : "asc" : "";
 
             const query = new URLSearchParams({
                 transaction_date_from: startDate,
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div>
                                 <div className="flex items-baseline gap-2"><span className="text-4xl font-bold text-primary">RM {topupList.current_balance}</span><span className="text-lg text-gray-600">Available</span></div>
-                                <p className="text-sm text-gray-500 mt-1">Last updated: {moment(`${topupList.latest_update}`, "YYYY-MM-DD HH:mm:ss").format("DD-MMM-YYYY, hh:mm A")}</p>
+                                <p className="text-sm text-gray-500 mt-1">Last updated: {topupList.latest_update ? moment(`${topupList.latest_update}`, "YYYY-MM-DD HH:mm:ss").format("DD-MMM-YYYY, hh:mm A") : ''}</p>
                             </div>
                         </div>
                     </div>

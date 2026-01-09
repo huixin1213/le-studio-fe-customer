@@ -202,7 +202,7 @@ export default function VouchersPage() {
     async function fetchHistoryVouchers(page: number = 1) {
         try {
             const sortField = sorting?.[0]?.id ?? "";
-            const sortOrder = sorting?.[0]?.desc ? "desc" : "asc";
+            const sortOrder = sorting.length > 0 ? sorting?.[0]?.desc ? "desc" : "asc" : "";
 
             const query = new URLSearchParams({
                 transaction_date_from: startDate,
